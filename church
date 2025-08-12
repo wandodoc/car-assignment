@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>교회 수련회 차량 배정</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; }
+  h1 { font-size: 22px; }
+  .vehicle { margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+  .driver { font-weight: bold; color: darkblue; }
+</style>
+</head>
+<body>
+<h1>교회 수련회 차량 배정 결과</h1>
+<div id="result"></div>
+<script>
+  // 차량별 인원수 (운전자 포함)
+  const vehicleSizes = [3, 2, 5, 5];
+  // 운전자 이름
+  const drivers = ["최명호 목사님", "유태호", "변호준", "어윤권"];
+  // 나머지 참가자 이름
+  const passengers = [
+    "고민석", "고은석", "이유빈", "김민희", "권영탁", 
+    "조에스더", "강담영", "구본윤", "배시온", "김시은", "동영진"
+  ];
+  // 배열 섞기 함수
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1)); // ← 여기 * 로 수정
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+  // 승객 랜덤 섞기
+  shuffle(passengers);
+  // 차량 배정
+  let start = 0;
+  let resultHtml = "";
+  for (let i = 0; i < vehicleSizes.length; i++) {
+    const size = vehicleSizes[i];
+    const driver = drivers[i];
+    const countPassengers = size - 1;
+    const group = [driver, ...passengers.slice(start, start + countPassengers)];
+    start += countPassengers;
+    resultHtml += `<div class="vehicle"><strong>${i+1}호차</strong><br>` +
+                  group.map((p, idx) => idx === 0 ? `<span class="driver">${p}</span>` : p).join("<br>") +
+                  `</div>`;
+  }
+  document.getElementById("result").innerHTML = resultHtml;
+</script>
+</body>
+</html>
